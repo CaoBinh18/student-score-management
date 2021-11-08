@@ -98,7 +98,7 @@
                             title='${item.status ? 'inactive' : 'active'} student' onclick='student.changeStatus(${item.id}, ${item.status})'>
                                 <i class='fa ${item.status ? 'fa-lock' : 'fa-lock-open'}'></i>
                             </a>
-                            <a href='javascript:;' class='btn btn-danger btn-sm' title='remove employee' onclick='student.remove(${item.id})'>
+                            <a href='javascript:;' class='btn btn-danger btn-sm' title='remove student' onclick='student.remove(${item.id})'>
                                 <i class='fa fa-trash'></i>
                             </a>
                     </td>
@@ -137,9 +137,13 @@
             "course" : $('#course').val(),
             "status": $('#status').is(":checked")
         };
+        console.log(createObj);
         $.ajax({
             url: apiUrl,
-            dataType: "JSON",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             type: "POST",
             data: JSON.stringify(createObj),
             success: function (result) {
@@ -201,6 +205,10 @@
                 if (confirmed) {
                     $.ajax({
                         url: `${apiUrl}/${id}`,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
                         type: "DELETE",
                         success: function (result) {
                             if (result) {
@@ -231,14 +239,18 @@
             },
             callback: function (confirmed) {
                 if (confirmed) {
-                    let changeStautsObj = {
+                    let changeSttObj = {
                         id: id,
                         status: !status
                     };
                     $.ajax({
                         url: `${apiUrl}/${id}`,
                         type: "PUT",
-                        data: JSON.stringify(changeStautsObj),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify(changeSttObj),
                         success: function (result) {
                             if (result) {
                                 student.showStudent();

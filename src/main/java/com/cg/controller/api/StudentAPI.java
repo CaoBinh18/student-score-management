@@ -45,20 +45,20 @@ public class StudentAPI {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Student> saveStudent(@RequestBody Student student) {
-        if (student.getId() != null) {
+     //   if (student.getId() != null) {
             return new ResponseEntity<>(studentService.save(student), HttpStatus.OK);
-        }
+     //   }
 
-        Optional<Class> aClass = classService.findById(student.getAClass().getId());
+      //  Optional<Class> aClass = classService.findById(student.getAClass().getId());
 
-        if (aClass.isPresent()) {
-            student.setAClass(aClass.get());
-            return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+       // if (aClass.isPresent()) {
+           // student.setAClass(aClass.get());
+       //     return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
+       // } else {
+       //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //}
     }
 
     @PutMapping()
