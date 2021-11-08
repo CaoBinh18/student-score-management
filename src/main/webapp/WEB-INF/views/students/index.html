@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student</title>
+    <th:block th:replace="/layout/head :: head"/>
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="../../../resources/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+<!--    <th:block th:replace="/layout/navbar :: navbar"/>-->
+
+    <th:block th:replace="/layout/main-sidebar :: sidebar"/>
+    <div class="content-wrapper">
+
+        <th:block th:replace="/layout/content-header :: content-header"/>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <a href="javascript:;" class="btn btn-primary" onclick="student.openModal()">
+                        <i class="fa fa-plus"></i>
+                        Create
+                    </a>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap" id="tbStudent">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>Birth of day</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    </div>
+    <th:block th:replace="/students/create.html :: modal"/>
+</div>
+
+
+
+<th:block th:replace="/layout/script :: script"/>
+<script>
+    let student = {};
+    const apiUrl = "http://localhost:8080/api/students"
+
+    student.showStudent = function () {
+        $.ajax({
+            url: apiUrl,
+            dataType: "JSON",
+            type: "GET",
+            success: function (data) {
+                $.each(data, function (index, item){
+                    $('#tbStudent>tbody').prepend(`
+                    <tr>
+                            <td>${item.id}</td>
+                            <td>${item.fullName}</td>
+                            <td>${item.gender}</td>
+                            <td>${moment(item.dob).format("YYYY-MM-DD")}</td>
+                            <td><span class="badge ${item.status ? 'bg-success' : 'bg-warning'}">${item.status ? 'active' : 'inactive'}</span></td>
+                            <td>
+                            <a href='javascript:;' class='btn btn-primary btn-sm' title='edit student' onclick='student.get(${item.id})'>
+                                <i class='fa fa-edit'></i>
+                            </a>
+                            <a href='javascript:;' class='btn ${item.status ? 'btn-warning' : 'btn-secondary'} btn-sm'
+                            title='${item.status ? 'inactive' : 'active'} student' onclick='student.changeStatus(${item.id}, ${item.status})'>
+                                <i class='fa ${item.status ? 'fa-lock' : 'fa-lock-open'}'></i>
+                            </a>
+                            <a href='javascript:;' class='btn btn-danger btn-sm' title='remove employee' onclick='student.remove(${item.id})'>
+                                <i class='fa fa-trash'></i>
+                            </a>
+                    </td>
+                    </tr>
+                `)
+
+                })
+            }
+        });
+    }
+
+    student.openModal = function () {
+        $('#addEditModal').modal('show');
+        student.resetForm();
+    }
+
+    student.save = function () {
+        if ($('#addEditForm').valid()) {
+            let id = Number($('#studentId').val());
+            if(id == 0){
+                student.createStudent();
+            }
+            else{
+                student.modifyStudent(id);
+            }
+        }
+    }
+
+    student.createStudent = function(){
+        let createObj = {
+            "fullName": $('#fullname').val(),
+            "gender": $('#gender').val(),
+            "dob": $('#dob').val(),
+            "address": $('#address').val(),
+            "class" : $('#class').val(),
+            "course" : $('#course').val(),
+            "status": $('#status').is(":checked")
+        };
+        $.ajax({
+            url: apiUrl,
+            dataType: "JSON",
+            type: "POST",
+            data: JSON.stringify(createObj),
+            success: function (result) {
+                if (result) {
+                    student.showStudent();
+                    $('#addEditModal').modal('hide');
+                    $.notify("Student has been created successfully!", "success");
+                }
+            }
+        })
+    }
+
+    student.modifyStudent = function(id){
+        let modifyObj = {
+            "id": id,
+            "fullName": $('#fullname').val(),
+            "gender": $('#gender').val(),
+            "dob": $('#dob').val(),
+            "address": $('#address').val(),
+            "status": $('#status').is(":checked")
+        };
+        $.ajax({
+            url: `${apiUrl}/${id}`,
+            type: "PUT",
+            data: JSON.stringify(modifyObj),
+            success: function (result) {
+                if (result) {
+                    student.showStudent();
+                    $('#addEditModal').modal('hide');
+                    $.notify("Student has been modified successfully!", "success");
+                }
+            }
+        })
+    }
+
+    student.resetForm = function () {
+        $('#addEditForm').validate().resetForm();
+        $('#fullname').val('');
+        $('#gender').val('');
+        $('#dob').val('');
+        $('#address').val('');
+        $('#status').prop('checked', false);
+        $('#addEditModal').find('.modal-title').text('Create new student');
+    }
+
+    student.remove = function (id) {
+        bootbox.confirm({
+            title: "Remove student?",
+            message: "Do you want to remove the student now? This cannot be undone.",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirm'
+                }
+            },
+            callback: function (confirmed) {
+                if (confirmed) {
+                    $.ajax({
+                        url: `${apiUrl}/${id}`,
+                        type: "DELETE",
+                        success: function (result) {
+                            if (result) {
+                                student.showStudent();
+                                $.notify("Student has been removed successfully", "success");
+                            }
+                            else {
+                                $.notify("Something went wrong, please contact administrator", "error");
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    }
+
+    student.changeStatus = function (id, status) {
+        bootbox.confirm({
+            title: `${status ? 'Inactive' : 'Active'}  student?`,
+            message: `Do you want to ${status ? 'inactive' : 'active'} the student now?`,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> No'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Yes'
+                }
+            },
+            callback: function (confirmed) {
+                if (confirmed) {
+                    let changeStautsObj = {
+                        id: id,
+                        status: !status
+                    };
+                    $.ajax({
+                        url: `${apiUrl}/${id}`,
+                        type: "PUT",
+                        data: JSON.stringify(changeStautsObj),
+                        success: function (result) {
+                            if (result) {
+                                student.showStudent();
+                                $.notify(`Student has been ${status ? 'inactived' : 'actived'} successfully`, "success");
+                            }
+                            else {
+                                $.notify("Something went wrong, please contact administrator", "error");
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    }
+
+    student.get = function (id) {
+        $.ajax({
+            url: `${apiUrl}/${id}`,
+            type: "GET",
+            success: function (stu) {
+                $('#addEditModal').modal('show');
+                $('#addEditModal').find('.modal-title').text('Edit student');
+                $('#fullname').val(stu.fullname);
+                $('#gender').val(stu.gender);
+                $('#dob').val(stu.dob);
+                $('#address').val(stu.address);
+                $('#status').prop('checked', stu.status);
+                $('#studentId').val(stu.id);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        student.showStudent();
+    });
+</script>
+
+</body>
+</html>

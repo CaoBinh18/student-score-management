@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:fragment="script">
+
+    <!-- jQuery -->
+    <script src="/resources/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/resources/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="/resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- JQVMap -->
+    <script src="/resources/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="/resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- daterangepicker -->
+    <script src="/resources/plugins/moment/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/resources/dist/js/adminlte.js"></script>
+<!--    &lt;!&ndash; AdminLTE dashboard demo (This is only for demo purposes) &ndash;&gt;-->
+<!--    <script src="dist/js/pages/dashboard.js"></script>-->
+</th:block>
