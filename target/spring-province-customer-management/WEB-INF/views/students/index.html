@@ -212,11 +212,11 @@
                         type: "DELETE",
                         success: function (result) {
                             if (result) {
-                                student.showStudent();
-                                $.notify("Student has been removed successfully", "success");
+                                $.notify("Something went wrong, please contact administrator", "error");
                             }
                             else {
-                                $.notify("Something went wrong, please contact administrator", "error");
+
+                                $.notify("Student has been removed successfully", "success");
                             }
                         }
                     })
@@ -239,7 +239,7 @@
             },
             callback: function (confirmed) {
                 if (confirmed) {
-                    let changeStautsObj = {
+                    let changeSttObj = {
                         id: id,
                         status: !status
                     };
@@ -250,7 +250,7 @@
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        data: JSON.stringify(changeStautsObj),
+                        data: JSON.stringify(changeSttObj),
                         success: function (result) {
                             if (result) {
                                 student.showStudent();

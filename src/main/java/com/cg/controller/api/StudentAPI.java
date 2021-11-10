@@ -71,15 +71,25 @@ public class StudentAPI {
         return new ResponseEntity<>(studentService.save(student), HttpStatus.OK);
     }
 
-    @DeleteMapping()
-    public ResponseEntity<Student> deleteStudent(@RequestBody Map<String, String> json) {
-        Long id = Long.valueOf(json.get("id"));
-        Optional<Student> studentOptional = studentService.findById(id);
-        if (!studentOptional.isPresent()) {
+//    @DeleteMapping()
+//    public ResponseEntity<Student> deleteStudent(@RequestBody Map<String, String> json) {
+//        Long id = Long.valueOf(json.get("id"));
+//        Optional<Student> studentOptional = studentService.findById(id);
+//        if (!studentOptional.isPresent()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        studentService.remove(id);
+//        return new ResponseEntity<>(studentOptional.get(), HttpStatus.NO_CONTENT);
+//    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Student> deleteCustomer(@PathVariable Long id) {
+        Optional<Student> customerOptional = studentService.findById(id);
+        if (!customerOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         studentService.remove(id);
-        return new ResponseEntity<>(studentOptional.get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(customerOptional.get(), HttpStatus.NO_CONTENT);
     }
-
 }

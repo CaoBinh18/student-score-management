@@ -13,6 +13,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "students")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Student {
 
     @Id

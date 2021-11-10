@@ -212,11 +212,11 @@
                         type: "DELETE",
                         success: function (result) {
                             if (result) {
-                                student.showStudent();
-                                $.notify("Student has been removed successfully", "success");
+                                $.notify("Something went wrong, please contact administrator", "error");
                             }
                             else {
-                                $.notify("Something went wrong, please contact administrator", "error");
+
+                                $.notify("Student has been removed successfully", "success");
                             }
                         }
                     })
