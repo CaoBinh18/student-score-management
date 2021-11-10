@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="spring-province-customer-management:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>spring-province-customer-management</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="spring-province-customer-management.war">
+      <element id="artifact" artifact-name="spring-province-customer-management:war exploded" />
+    </root>
+  </artifact>
+</component>

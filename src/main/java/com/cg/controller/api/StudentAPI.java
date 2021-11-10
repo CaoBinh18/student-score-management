@@ -1,23 +1,20 @@
 package com.cg.controller.api;
 
-import com.cg.model.Class;
-import com.cg.model.Course;
 import com.cg.model.Student;
+import com.cg.model.dto.IStudentDTO;
+import com.cg.model.dto.StudentDTO;
 import com.cg.service.classes.IClassService;
-import com.cg.service.course.ICourseService;
 import com.cg.service.student.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/students")
+@RequestMapping("/api/students")
 public class StudentAPI {
 
     @Autowired
@@ -35,6 +32,17 @@ public class StudentAPI {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
+    @GetMapping("/get-all-dto")
+    public ResponseEntity<Iterable<?>> allStudentDTOs() {
+
+        Iterable<IStudentDTO> studentDTOS = studentService.findAllIDTO();
+
+        if (((List) studentDTOS).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(studentDTOS, HttpStatus.ACCEPTED);
+    }
+
     @GetMapping("/view/{id}")
     public ResponseEntity<Student> getId(@PathVariable Long id) {
         Optional<Student> studentOptional = studentService.findById(id);
@@ -48,7 +56,11 @@ public class StudentAPI {
     @PostMapping
     public ResponseEntity<Student> saveStudent(@RequestBody Student student) {
      //   if (student.getId() != null) {
-            return new ResponseEntity<>(studentService.save(student), HttpStatus.OK);
+
+        Student studentTemp = student;
+
+
+            return new ResponseEntity<>(studentService.save(studentTemp), HttpStatus.OK);
      //   }
 
       //  Optional<Class> aClass = classService.findById(student.getAClass().getId());

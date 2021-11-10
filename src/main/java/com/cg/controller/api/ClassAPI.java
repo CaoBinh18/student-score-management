@@ -1,9 +1,8 @@
 package com.cg.controller.api;
 
 
-import com.cg.model.Class;
+import com.cg.model.AppClass;
 import com.cg.model.Course;
-import com.cg.model.Student;
 import com.cg.service.classes.IClassService;
 import com.cg.service.course.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,8 @@ public class ClassAPI {
     private ICourseService courseService;
 
     @GetMapping
-    public ResponseEntity<Iterable<Class>> allClass() {
-        Iterable<Class> classes = classService.findAll();
+    public ResponseEntity<Iterable<AppClass>> allClass() {
+        Iterable<AppClass> classes = classService.findAll();
         if (((List) classes).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -34,7 +33,7 @@ public class ClassAPI {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Class> saveStudent(@RequestBody Class aClass) {
+    public ResponseEntity<AppClass> saveStudent(@RequestBody AppClass aClass) {
         if (aClass.getId() != null) {
             return new ResponseEntity<>(classService.save(aClass), HttpStatus.OK);
         }

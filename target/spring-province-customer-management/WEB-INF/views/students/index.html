@@ -50,7 +50,8 @@
                             <th>ID</th>
                             <th>Full Name</th>
                             <th>Gender</th>
-                            <th>Birth of day</th>
+                            <th>Day of  birth</th>
+                            <th>Classes</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -76,9 +77,18 @@
     let student = {};
     const apiUrl = "http://localhost:8080/api/students"
 
+    let page = {
+        url: {
+            getAllClasses: "http://localhost:8089/api/classes",
+            getAllStudents: "http://localhost:8089/api/students/get-all-dto"
+        },
+        commands: {},
+        loadData: {}
+    }
+
     student.showStudent = function () {
         $.ajax({
-            url: apiUrl,
+            url: page.url.getAllStudents,
             dataType: "JSON",
             type: "GET",
             success: function (data) {
@@ -89,6 +99,7 @@
                             <td>${item.fullName}</td>
                             <td>${item.gender}</td>
                             <td>${moment(item.dob).format("YYYY-MM-DD")}</td>
+                            <td>${item.classes}</td>
                             <td><span class="badge ${item.status ? 'bg-success' : 'bg-warning'}">${item.status ? 'active' : 'inactive'}</span></td>
                             <td>
                             <a href='javascript:;' class='btn btn-primary btn-sm' title='edit student' onclick='student.get(${item.id})'>
@@ -133,8 +144,12 @@
             "gender": $('#gender').val(),
             "dob": $('#dob').val(),
             "address": $('#address').val(),
-            "class" : $('#class').val(),
-            "course" : $('#course').val(),
+            "appClass" : {
+                id: $('#classes').val(),
+                "course" : {
+                    id: 1
+                }
+            },
             "status": $('#status').is(":checked")
         };
         console.log(createObj);
@@ -283,7 +298,27 @@
         });
     }
 
-    $(document).ready(function () {
+    page.loadData.getAllClasses = () => {
+        $.ajax({
+            url: page.url.getAllClasses,
+            type: "GET",
+            success: function (resp) {
+
+                let str = '';
+
+                $.each(resp, function (index, item) {
+                    str += `<option value="${item.id}">${item.name}</option>`;
+                })
+
+                $("#classes").append(str);
+            }
+        });
+    }
+
+    $(function () {
+
+        page.loadData.getAllClasses();
+
         student.showStudent();
     });
 </script>

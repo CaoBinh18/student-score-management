@@ -1,9 +1,7 @@
 package com.cg.service.classes;
 
-import com.cg.model.Class;
-import com.cg.model.Student;
+import com.cg.model.AppClass;
 import com.cg.repository.ClassRepository;
-import com.cg.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -14,17 +12,17 @@ public class ClassService implements IClassService{
     private ClassRepository classRepository;
 
     @Override
-    public Iterable<Class> findAll() {
+    public Iterable<AppClass> findAll() {
         return classRepository.findAll();
     }
 
     @Override
-    public Optional<Class> findById(Long id) {
+    public Optional<AppClass> findById(Long id) {
         return classRepository.findById(id);
     }
 
     @Override
-    public Class save(Class aClass) {
+    public AppClass save(AppClass aClass) {
         return classRepository.save(aClass);
     }
 

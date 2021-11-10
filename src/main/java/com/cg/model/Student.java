@@ -2,11 +2,11 @@ package com.cg.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -20,14 +20,18 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fullname", length = 50)
+    @Column(name = "full_name", length = 50)
     private String fullName;
     private String gender;
     private Date dob;
     private String address;
     private Boolean status;
 
+    @JsonIgnore
+    @OneToMany(targetEntity = Score.class, mappedBy = "student")
+    private Set<Score> scores;
+
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id")
-    private Class aClass;
+    private AppClass appClass;
 }

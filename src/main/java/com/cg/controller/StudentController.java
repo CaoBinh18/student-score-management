@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/students")
 public class StudentController {
@@ -26,7 +28,11 @@ public class StudentController {
     @GetMapping
     public ModelAndView listStudent() {
         ModelAndView modelAndView = new ModelAndView("/students/index");
-        modelAndView.addObject("students", studentService.findAll());
+
+//        Iterable<Student> students = studentService.findAll();
+
+//        modelAndView.addObject("students", students);
+        modelAndView.addObject("students", null);
         return modelAndView;
     }
 

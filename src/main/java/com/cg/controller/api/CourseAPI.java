@@ -1,7 +1,7 @@
 package com.cg.controller.api;
 
 
-import com.cg.model.Class;
+import com.cg.model.AppClass;
 import com.cg.service.classes.IClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ public class CourseAPI {
     private IClassService classService;
 
     @GetMapping
-    public ResponseEntity<Iterable<Class>> allClass() {
-        Iterable<Class> classes = classService.findAll();
+    public ResponseEntity<Iterable<AppClass>> allClass() {
+        Iterable<AppClass> classes = classService.findAll();
         if (((List) classes).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

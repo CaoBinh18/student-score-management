@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -18,5 +19,8 @@ public class Subject {
     private Long id;
 
     private String name;
+
+    @OneToMany(targetEntity = Score.class, mappedBy = "subject", fetch = FetchType.EAGER)
+    private Set<Score> scores;
 
 }
